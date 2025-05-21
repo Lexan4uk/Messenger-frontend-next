@@ -7,9 +7,12 @@ import SideMenu from './components/side-menu/SideMenu'
 
 export default function Page() {
 	return (
-		<PanelGroup direction='horizontal'>
+		<PanelGroup
+			direction='horizontal'
+			className='h-screen!'
+		>
 			<Panel
-				className='relative'
+				className='relative h-full'
 				defaultSize={32}
 				minSize={20}
 				maxSize={32}
@@ -18,7 +21,7 @@ export default function Page() {
 			</Panel>
 			<PanelResizeHandle className='w-0.25 cursor-col-resize bg-border' />
 			<Panel
-				className='flex relative'
+				className='flex relative h-full'
 				defaultSize={68}
 			>
 				<MainArea />

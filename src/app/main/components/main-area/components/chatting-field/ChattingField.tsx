@@ -32,7 +32,7 @@ export default function ChattingField({ chatId }: IChattingField) {
 	}
 
 	return (
-		<div className='MessageInputField mb-7 pt-2 flex items-end'>
+		<div className='MessageInputField mb-3 pt-2 flex items-end h-fit'>
 			<div className='bg-background-secondary flex flex-1 items-end rounded-2xl'>
 				<div className='flex ml-3 '>
 					<ButtonIcon className='group h-14 hover:bg-background-secondary!'>

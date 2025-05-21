@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 import { IMessage } from '@/types/message.types'
@@ -27,24 +27,7 @@ export default function MessagesArea({ chatId }: IMessagesArea) {
 
 	const { lastMessage } = useLoadLastMessage()
 
-	const wrapperRef = useRef<HTMLDivElement>(null)
-	const [scrollHeight, setScrollHeight] = useState<number | undefined>(
-		undefined
-	)
 	const { profileData } = useProfile()
-
-	useEffect(() => {
-		if (wrapperRef.current) {
-			setScrollHeight(wrapperRef.current.clientHeight)
-		}
-		const handleResize = () => {
-			if (wrapperRef.current) {
-				setScrollHeight(wrapperRef.current.clientHeight)
-			}
-		}
-		window.addEventListener('resize', handleResize)
-		return () => window.removeEventListener('resize', handleResize)
-	}, [])
 
 	useEffect(() => {
 		//without this InfiniteScroll is breaking when the user selects a chat twice
@@ -79,27 +62,27 @@ export default function MessagesArea({ chatId }: IMessagesArea) {
 	}
 
 	return (
-		<div className='mx-auto grid w-150 h-full relative'>
-			<div
-				className='flex flex-1 px-4'
-				ref={wrapperRef}
-			>
-				{scrollHeight && (
+		<div className='flex flex-col h-full w-150 mx-auto relative'>
+			<div className='flex-1 overflow-hidden'>
+				<div
+					id='scrollableDiv'
+					className='h-full overflow-y-auto px-4 flex flex-col-reverse relative messages-scroll'
+				>
 					<InfiniteScroll
 						key={chatId}
 						dataLength={loadedMessages.length}
 						next={fetchMoreData}
 						hasMore={hasMore}
 						loader={''}
-						height={scrollHeight}
-						scrollableTarget='scrollableDiv'
-						className='flex flex-1 flex-col-reverse pr-2 messages-scroll'
 						inverse={true}
+						scrollableTarget='scrollableDiv'
+						className='flex flex-col-reverse w-full'
 					>
 						<GroupedMessages messages={loadedMessages} />
 					</InfiniteScroll>
-				)}
+				</div>
 			</div>
+
 			{profileData?.name ? (
 				<ChattingField chatId={chatId} />
 			) : (

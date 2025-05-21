@@ -12,12 +12,7 @@ interface IMessageElement {
 }
 export default function MessageElement({ data, isSender }: IMessageElement) {
 	return (
-		<div
-			className={cn(
-				'MessageHolder flex gap-2 items-end',
-				isSender ? 'justify-end' : 'justify-start'
-			)}
-		>
+		<div className={cn('MessageHolder flex gap-2 items-end w-full')}>
 			{!isSender && (
 				<LetterPicture
 					letter={data.sender.name?.charAt(0) || 'P'}
@@ -27,23 +22,32 @@ export default function MessageElement({ data, isSender }: IMessageElement) {
 			)}
 			<div
 				className={cn(
-					'babbbbe mb-1.5 flex rounded-2xl w-fit  max-w-full',
-					isSender ? 'bg-active' : 'bg-background-secondary '
+					'flex flex-1 relative max-w-full',
+					isSender ? 'justify-end' : 'justify-start'
 				)}
 			>
-				<div className='px-2 pt-1.25 pb-1.5 flex flex-col max-w-full'>
-					<div className='text-sm text-text-secondary'>
-						{!isSender && (
-							<div className=''>
-								{data.sender.name ? data.sender.name : `@${data.sender.login}`}
-							</div>
-						)}
-					</div>
-					<div className='whitespace-pre-wrap break-words leading-5.5 text-left flex items-end relative'>
-						<p className='break-words max-w-full'>{data.content}</p>
-						<span className='ml-1.75 px-1 leading-5 text-xs text-text-secondary whitespace-nowrap '>
-							{FormatTime12(data.createdAt)}
-						</span>
+				<div
+					className={cn(
+						'mb-1.5 flex rounded-2xl w-fit',
+						isSender ? 'bg-active' : 'bg-background-secondary '
+					)}
+				>
+					<div className='px-2 pt-1.25 pb-1.5 flex flex-col max-w-full'>
+						<div className='text-sm text-text-secondary'>
+							{!isSender && (
+								<div className=''>
+									{data.sender.name
+										? data.sender.name
+										: `@${data.sender.login}`}
+								</div>
+							)}
+						</div>
+						<div className='whitespace-pre-wrap break-words leading-5.5 text-left flex items-end relative'>
+							<p className='break-all max-w-full'>{data.content}</p>
+							<span className='ml-1.75 px-1 leading-5 text-xs text-text-secondary whitespace-nowrap '>
+								{FormatTime12(data.createdAt)}
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>

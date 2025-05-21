@@ -16,7 +16,7 @@ export const InputFieldMessage = forwardRef<
 	InputFieldMessageProps
 >(
 	(
-		{ id, extra, placeholder, onSend, internalRef, maxHeight = 40, ...rest },
+		{ id, extra, placeholder, onSend, internalRef, maxHeight = 100, ...rest },
 		ref
 	) => {
 		useEffect(() => {

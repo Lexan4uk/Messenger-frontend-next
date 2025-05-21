@@ -18,7 +18,7 @@ export default function MainArea() {
 	return !selectedChat ? (
 		''
 	) : (
-		<main className='MainArea flex flex-col flex-1 w-full'>
+		<main className='MainArea flex flex-col w-full relative'>
 			<header className='flex h-13 px-3 py-1.5 items-center content-between bg-background-secondary'>
 				<div className='flex h-full w-full'>
 					<div className='mr-2.5'>
@@ -50,7 +50,7 @@ export default function MainArea() {
 					)}
 				</Popover>
 			</header>
-			<div className='MessagesArea relative flex-1'>
+			<div className='MessagesArea relative flex-1 overflow-hidden'>
 				<MessagesArea chatId={selectedChat.id} />
 			</div>
 		</main>

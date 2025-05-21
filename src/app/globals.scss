@@ -43,6 +43,9 @@ body {
 }
 
 @layer components {
+	.infinite-scroll-component__outerdiv {
+		@apply flex flex-1;
+	}
 	.messages-scroll {
 		position: relative;
 		overflow-y: overlay !important;
