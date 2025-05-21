@@ -1,0 +1,128 @@
+@use 'tailwindcss';
+
+:root {
+	--color-background: rgb(15, 15, 15);
+	--color-background-secondary: rgb(33, 33, 33);
+	--color-text: rgb(255, 255, 255);
+	--color-text-secondary: rgb(170, 170, 170);
+	--color-icon-inactive: rgb(107, 107, 107);
+
+	--color-active: rgb(118, 106, 200);
+	--color-purple-button-active: rgb(123, 113, 198);
+
+	--color-fields: rgb(44, 44, 44);
+
+	--color-border: rgb(48, 48, 48);
+
+	--color-hover-button: rgb(0, 0, 0, 0.2);
+
+	--color-red-error: rgb(229, 57, 53);
+}
+
+body {
+	input:-webkit-autofill {
+		box-shadow: 0 0 0px 1000px transparent inset !important;
+		-webkit-text-fill-color: var(--color-text) !important;
+		font-family: inherit !important;
+		transition: background-color 9999s ease-in-out 0s;
+	}
+	@apply text-base overflow-hidden;
+	font-family: var(--font-rubik), sans-serif;
+	color: var(--color-text);
+	background-color: var(--color-background);
+	button {
+		cursor: pointer;
+	}
+	@media (max-width: 1200px) {
+		font-size: 16px;
+	}
+
+	@media (max-width: 992px) {
+		font-size: 14px;
+	}
+}
+
+@layer components {
+	.messages-scroll {
+		position: relative;
+		overflow-y: overlay !important;
+
+		&::-webkit-scrollbar {
+			width: 8px;
+			position: absolute;
+			right: 0;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background-color: var(--color-icon-inactive);
+			border-radius: 4px;
+		}
+
+		&::-webkit-scrollbar-track {
+			background: transparent;
+		}
+		&::-webkit-scrollbar-thumb:hover {
+			cursor: pointer;
+			background-color: var(--color-text-secondary);
+		}
+	}
+	.popover {
+		&_base {
+			@apply rounded-xl backdrop-blur-md flex flex-col min-w-[200px] border;
+			border-color: var(--color-border);
+			background-color: color-mix(
+				in oklab,
+				var(--color-background-secondary) 92%,
+				transparent
+			);
+		}
+		&_bottom-border {
+			@apply border-b-1 flex;
+			border-color: var(--color-border);
+		}
+		&_item {
+			@apply rounded-md text-left m-1 p-1 pl-2.5 flex flex-1 items-center;
+			&:hover {
+				background-color: color-mix(
+					in oklab,
+					var(--color-background) 60%,
+					transparent
+				);
+			}
+		}
+		&_icon {
+			@apply ml-1;
+			color: var(--color-text-secondary);
+		}
+		&_text {
+			@apply ml-4;
+		}
+	}
+	.dialog {
+		&_base {
+			@apply fixed inset-0 flex w-screen items-center justify-center;
+			background-color: color-mix(
+				in oklab,
+				var(--color-black) 30%,
+				transparent
+			);
+		}
+		&_panel {
+			@apply rounded-2xl p-4 flex flex-col gap-1 relative;
+			background-color: var(--color-background-secondary);
+		}
+		&_close-icon {
+			@apply absolute right-1 top-1 m-1;
+		}
+	}
+	.dialog-appearance-animation {
+		@apply transition duration-300 ease-in data-closed:opacity-0;
+	}
+
+	.popover-appearance-animation {
+		@apply transform -translate-y-2 opacity-0 transition duration-300 ease-out;
+	}
+	.popover-appearance-animation[data-headlessui-state='open'] {
+		@apply translate-y-0 opacity-100;
+	}
+}
