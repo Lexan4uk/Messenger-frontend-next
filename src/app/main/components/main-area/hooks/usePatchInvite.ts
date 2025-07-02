@@ -8,6 +8,7 @@ export function usePatchInvite() {
 	const queryClient = useQueryClient()
 	const {
 		mutate: patchInvite,
+		data: patchInviteData,
 		isError: isPatchInviteError,
 		isSuccess: isPatchInviteSuccess
 	} = useMutation({

@@ -1,7 +1,11 @@
 import { useMutation } from '@tanstack/react-query'
 import { AxiosError } from 'axios'
 
-import { IInviteCreate, IInviteError } from '@/types/invite.types'
+import {
+	IInviteCreate,
+	IInviteError,
+	IInviteSuccess
+} from '@/types/invite.types'
 
 import { inviteService } from '@/services/invite.service'
 
@@ -9,13 +13,12 @@ export function useNewInvite() {
 	const {
 		mutate: newInvite,
 		data: inviteData,
-		isError: isInviteError,
-		isSuccess: isInviteSuccess,
 		error: inviteError
-	} = useMutation<any, AxiosError<IInviteError>, IInviteCreate>({
+	} = useMutation<IInviteSuccess, AxiosError<IInviteError>, IInviteCreate>({
 		mutationKey: ['newInvite'],
-		mutationFn: (data: IInviteCreate) => inviteService.newInvite(data)
+		mutationFn: (data: IInviteCreate) =>
+			inviteService.newInvite(data).then(response => response.data)
 	})
 
-	return { newInvite, inviteData, isInviteError, isInviteSuccess, inviteError }
+	return { newInvite, inviteData, inviteError }
 }

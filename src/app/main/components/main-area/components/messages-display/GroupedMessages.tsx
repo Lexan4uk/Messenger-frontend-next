@@ -19,6 +19,17 @@ interface IGroupedMessages {
 export default function GroupedMessages({ messages }: IGroupedMessages) {
 	const { profileData } = useProfile()
 
+	// Check if messages array is empty
+	if (messages.length === 0) {
+		return (
+			<div className='text-center text-sm py-4'>
+				<div className='bg-black/30 w-fit rounded-xl py-0.75 px-2 mx-auto'>
+					Send first message!
+				</div>
+			</div>
+		)
+	}
+
 	const grouped = messages.reduce<Record<string, IMessage[]>>((acc, msg) => {
 		const dateKey = dayjs(msg.createdAt).format('YYYY-MM-DD')
 		if (!acc[dateKey]) acc[dateKey] = []
@@ -41,7 +52,7 @@ export default function GroupedMessages({ messages }: IGroupedMessages) {
 						<MessageElement
 							key={message.id}
 							data={message}
-							isSender={message.senderId === profileData?.id}
+							isSender={message.sender.login === profileData?.login}
 						/>
 					))}
 					<div className='text-center text-sm py-4 flex justify-center'>

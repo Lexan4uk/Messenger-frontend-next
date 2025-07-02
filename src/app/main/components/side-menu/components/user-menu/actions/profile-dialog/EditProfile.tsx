@@ -10,10 +10,11 @@ import { TransparentField } from '@/components/ui/fields/TransparentField'
 
 import { IUser, IUserUpdate } from '@/types/auth.types'
 
+import ImageKitProps from '@/config/ImageKitProps'
+
 import { useProfileUpdate } from '@/hooks/useProfileUpdate'
 
 import EditProfileSaveButton from './EditProfileSaveButton'
-import ImageKitProps from './ImageKitProps'
 
 interface IEditProfile {
 	setEditProfile: Dispatch<SetStateAction<boolean>>
@@ -39,7 +40,7 @@ export default function EditProfile({
 		if (profileData) {
 			reset({
 				login: profileData.login || '',
-				name: profileData.name || ''
+				name: profileData.name?.startsWith('@') ? '' : profileData.name
 			})
 		}
 	}, [profileData, reset])
@@ -136,7 +137,7 @@ export default function EditProfile({
 						<TransparentField
 							maxLength={30}
 							id='name'
-							placeholder='Enter name:'
+							placeholder={profileData.name}
 							extra='w-full px-4 py-3'
 							{...register('name')}
 						/>

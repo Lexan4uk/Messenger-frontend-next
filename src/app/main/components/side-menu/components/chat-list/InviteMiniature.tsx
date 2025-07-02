@@ -1,12 +1,12 @@
 import { Ban, Check } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
 
-import { EnumInviteStatus, IInvitesGet } from '@/types/invite.types'
+import { EnumInviteStatus, IInviteListItem } from '@/types/invite.types'
 
 import { usePatchInvite } from '../../../main-area/hooks/usePatchInvite'
 
 interface IInviteMiniature {
-	invite: IInvitesGet
+	invite: IInviteListItem
 	setChatMode: Dispatch<SetStateAction<boolean>>
 }
 
@@ -23,15 +23,11 @@ export default function InviteMiniature({ invite }: IInviteMiniature) {
 			<div className='min-w-0 flex-1 flex flex-col justify-between text-left'>
 				<h3 className='text-base truncate'>
 					<span className='font-medium '>User: </span>
-					<span className='text-text-secondary'>
-						{invite.sender.name
-							? invite.sender.name
-							: `@${invite.sender.login}`}
-					</span>
+					<span className='text-text-secondary'>{invite.senderName}</span>
 				</h3>
 				<p className='truncate'>
 					<span className='font-medium'>Invited you to chat: </span>
-					<span className='text-text-secondary'>{invite.chat.title}</span>
+					<span className='text-text-secondary'>{invite.chatName}</span>
 				</p>
 			</div>
 			<div className='flex flex-col justify-between'>

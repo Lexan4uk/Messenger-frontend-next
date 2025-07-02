@@ -15,7 +15,7 @@ export function useProfileUpdate() {
 	} = useMutation({
 		mutationKey: ['updateProfile'],
 		mutationFn: (data: IUserUpdate) => userService.update(data),
-		onSuccess: data => {
+		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ['profile'] })
 			toast('Profile updated!')
 		},

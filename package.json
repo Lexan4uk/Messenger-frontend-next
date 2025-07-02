@@ -28,6 +28,7 @@
 		"react-infinite-scroll-component": "^6.1.0",
 		"react-resizable-panels": "^2.1.7",
 		"sass": "^1.86.3",
+		"socket.io-client": "^4.8.1",
 		"sonner": "^2.0.3"
 	},
 	"devDependencies": {

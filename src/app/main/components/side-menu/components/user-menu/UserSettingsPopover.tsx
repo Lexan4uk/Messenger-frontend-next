@@ -21,7 +21,7 @@ export default function UserSettingsPopover({ user }: IUserSettingsPopover) {
 			<div className='popover_base mt-4 border'>
 				<div className='popover_bottom-border'>
 					<button
-						className='popover_item popover_item-bottom-border'
+						className='popover_item '
 						onClick={() => setIsProfileDialog(true)}
 					>
 						<LetterPicture

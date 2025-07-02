@@ -1,10 +1,9 @@
-import { Image } from '@imagekit/next'
 import cn from 'clsx'
-import { ArrowLeft, AtSign, Loader, Pencil } from 'lucide-react'
+import { ArrowLeft, AtSign, Pencil } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/buttons/Button'
+import LetterPicture from '@/components/ui/LetterPicture'
 import { ButtonIcon } from '@/components/ui/buttons/ButtonIcon'
 
 import { IUser } from '@/types/auth.types'
@@ -40,58 +39,46 @@ export default function ProfileData({
 					</ButtonIcon>
 				</div>
 			</header>
-			<div className='flex flex-col'>
+			<div className='flex flex-col h-full'>
 				<div
 					className={cn(
-						'flex items-center justify-center border-b border-border relative group',
+						'flex items-center justify-center h-30/100 border-b border-border relative group',
 						loading && 'p-10'
 					)}
 				>
-					{profileData?.imgUrl ? (
-						<>
-							{profileData?.name && (
-								<div className='absolute bottom-0 left-0 px-6 pb-2 text-xl font-medium'>
-									<span className='rounded-2xl bg-fields px-2 py-0.5 border border-border'>
-										{profileData.name}
-									</span>
-								</div>
-							)}
-							{loading ? (
-								<Loader />
-							) : (
-								<Image
-									src={profileData.imgUrl}
-									width={400}
-									height={500}
-									alt='Error while loading image'
-								/>
-							)}
-						</>
-					) : (
-						<div className='flex items-center justify-center w-full h-full p-10 text-active'>
-							<Button onClick={() => setEditProfile(true)}>
-								Add an avatar
-							</Button>
-						</div>
-					)}
-				</div>
-			</div>
-			<div className='flex flex-col p-3'>
-				<button
-					onClick={() => {
-						if (profileData?.login) {
-							navigator.clipboard.writeText(profileData.login)
-							toast('Copied to clipboard')
-						}
-					}}
-					className='flex items-center rounded-xl py-2.25 px-4 hover:bg-fields cursor-pointer'
-				>
-					<AtSign className='text-text-secondary mr-7' />
-					<div className=' flex flex-col text-start'>
-						<p className='text-lg'>{profileData?.login}</p>
-						<p className='text-text-secondary text-sm'>Username</p>
+					<div className='absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-black/60 to-transparent z-10 pointer-events-none' />
+					<div className='absolute bottom-2 left-6 text-xl font-medium z-20 text-white'>
+						<span className='px-2 py-0.5'>{profileData.name}</span>
 					</div>
-				</button>
+					<LetterPicture
+						url={profileData.imgUrl}
+						letter={
+							profileData.name
+								? profileData.name.charAt(0)
+								: profileData.login.charAt(0)
+						}
+						addStyle='w-full rounded-none text-[160px]'
+					/>
+				</div>
+				<div className='flex flex-col p-3 '>
+					<button
+						onClick={() => {
+							if (profileData?.login) {
+								navigator.clipboard.writeText(profileData.login)
+								toast('Copied to clipboard')
+							}
+						}}
+						className='flex items-center rounded-xl py-2.25 px-4 hover:bg-fields cursor-pointer'
+					>
+						<div className='mr-7'>
+							<AtSign className='text-text-secondary' />
+						</div>
+						<div className=' flex flex-col text-start'>
+							<p className='text-lg'>{profileData?.login}</p>
+							<p className='text-text-secondary text-sm'>Username</p>
+						</div>
+					</button>
+				</div>
 			</div>
 		</>
 	)

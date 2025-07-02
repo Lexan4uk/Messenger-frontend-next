@@ -37,8 +37,8 @@ export default function LetterPicture({
 		>
 			<Image
 				src={url}
-				width={50}
-				height={50}
+				width={1000}
+				height={1000}
 				alt='user avatar'
 				className={`object-cover h-full`}
 			/>

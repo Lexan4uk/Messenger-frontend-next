@@ -25,21 +25,14 @@ export default function NewMessageDialog({
 	isOpen,
 	onClose
 }: INewMessageDialog) {
-	const { register, handleSubmit, reset } = useForm<IInviteForm>({
+	const { register, handleSubmit, watch } = useForm<IInviteForm>({
 		mode: 'onChange'
 	})
 	const [searchFocus, setSearchFocus] = useState(false)
-	const { newDMInvite, inviteDMError, isInviteDMError, isInviteDMSuccess } =
-		useNewDMInvite()
-	//const { newInvite, inviteError, isInviteError, isInviteSuccess } = useNewInvite()
+	const { newDMInvite, inviteDMData, inviteDMError } = useNewDMInvite()
 
 	const onSubmit: SubmitHandler<IInviteForm> = (data: IInviteForm) => {
 		newDMInvite(data)
-		/*const queryData: IInviteCreate = {
-			chatId: chatId,
-			targetLogin: data.targetLogin
-		}
-		newInvite(queryData)*/
 	}
 
 	return (
@@ -79,13 +72,15 @@ export default function NewMessageDialog({
 							})}
 						/>
 					</div>
-					<Button>Send invite</Button>
-					{isInviteDMError && inviteDMError?.response?.data?.message && (
+					<Button>Start chat</Button>
+					{inviteDMError?.response?.data?.message && (
 						<p className='text-red-error text-sm'>
 							{inviteDMError.response.data.message}
 						</p>
 					)}
-					{isInviteDMSuccess && <p className='text-sm text'>Invite sent</p>}
+					{inviteDMData && (
+						<p className='text-sm text'>{inviteDMData.message}</p>
+					)}
 				</form>
 			</DialogPanel>
 		</Dialog>

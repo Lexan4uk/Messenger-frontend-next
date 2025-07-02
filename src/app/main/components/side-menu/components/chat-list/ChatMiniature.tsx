@@ -1,11 +1,12 @@
 'use client'
 
 import cn from 'clsx'
+import { Megaphone } from 'lucide-react'
 import { Dispatch, SetStateAction } from 'react'
 
 import LetterPicture from '@/components/ui/LetterPicture'
 
-import { IChat } from '@/types/chats.types'
+import { EnumChatType, IChat } from '@/types/chats.types'
 
 import { useSelectedChat } from '@/hooks/useSelectedChat'
 
@@ -36,11 +37,38 @@ export default function ChatMiniature({
 			onClick={toggleMiniatureClick}
 		>
 			<div className='mr-2 '>
-				<LetterPicture letter={chat.title.charAt(0)} />
+				<LetterPicture
+					url={chat.imgUrl}
+					letter={
+						chat.title.charAt(0) === '@'
+							? chat.title.charAt(1)
+							: chat.title.charAt(0)
+					}
+				/>
 			</div>
 			<div className='min-w-0 flex-1 flex flex-col justify-between text-left'>
-				<h3 className='text-base font-medium truncate'>{chat.title}</h3>
-				<p className='truncate'>{chat.description}</p>
+				<div className='flex gap-1'>
+					{chat.type === EnumChatType.group && (
+						<Megaphone
+							className={cn(
+								activeMiniature === chat.id
+									? 'text-text'
+									: 'text-text-secondary'
+							)}
+						/>
+					)}
+
+					<h3 className='text-base font-medium truncate'>{chat.title}</h3>
+				</div>
+
+				<p
+					className={cn(
+						'truncate',
+						activeMiniature === chat.id ? 'text-text' : 'text-text-secondary'
+					)}
+				>
+					{chat.description}
+				</p>
 			</div>
 		</button>
 	)

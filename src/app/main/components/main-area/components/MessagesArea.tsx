@@ -3,13 +3,11 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 
 import { IMessage } from '@/types/message.types'
 
-import { useProfile } from '@/hooks/useProfile'
+import socket from '@/config/soket'
 
-import { useLoadLastMessage } from '../hooks/loadLastMessage/useLoadLastMessage'
 import { useGetMessages } from '../hooks/useGetMessages'
 
 import ChattingField from './chatting-field/ChattingField'
-import ChattingFieldBlock from './chatting-field/ChattingFieldBlock'
 import GroupedMessages from './messages-display/GroupedMessages'
 
 interface IMessagesArea {
@@ -25,13 +23,25 @@ export default function MessagesArea({ chatId }: IMessagesArea) {
 	const [loadedMessages, setLoadedMessages] = useState<IMessage[]>([])
 	const [hasMore, setHasMore] = useState(true)
 
-	const { lastMessage } = useLoadLastMessage()
-
-	const { profileData } = useProfile()
-
 	useEffect(() => {
 		//without this InfiniteScroll is breaking when the user selects a chat twice
 		setHasMore(true)
+	}, [chatId])
+
+	useEffect(() => {
+		socket.emit('joinChat', chatId)
+
+		const handleNewMessage = (message: IMessage) => {
+			if (message.chatId !== chatId) return
+			//without this refetch is required to update the messages list
+			setLoadedMessages(prev => [message, ...prev])
+		}
+
+		socket.on('newMessage', handleNewMessage)
+
+		return () => {
+			socket.off('newMessage', handleNewMessage)
+		}
 	}, [chatId])
 
 	useEffect(() => {
@@ -39,14 +49,6 @@ export default function MessagesArea({ chatId }: IMessagesArea) {
 			setLoadedMessages(messagesData.data)
 		}
 	}, [isSuccess, messagesData])
-
-	useEffect(() => {
-		if (!lastMessage) return
-		const alreadyExists = loadedMessages.some(msg => msg.id === lastMessage.id)
-		if (!alreadyExists) {
-			setLoadedMessages(prev => [lastMessage, ...prev])
-		}
-	}, [lastMessage, loadedMessages])
 
 	const fetchMoreData = async () => {
 		if (loadedMessages.length === 0) return
@@ -83,11 +85,7 @@ export default function MessagesArea({ chatId }: IMessagesArea) {
 				</div>
 			</div>
 
-			{profileData?.name ? (
-				<ChattingField chatId={chatId} />
-			) : (
-				<ChattingFieldBlock />
-			)}
+			<ChattingField chatId={chatId} />
 		</div>
 	)
 }

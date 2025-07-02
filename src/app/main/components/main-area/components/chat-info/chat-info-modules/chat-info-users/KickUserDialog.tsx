@@ -11,12 +11,23 @@ import { Button } from '@/components/ui/buttons/Button'
 
 import { IDialogBase } from '@/types/base.types'
 
-import { useLogout } from '@/hooks/useLogout'
+import { useKickUserFromChat } from '../../../../hooks/useKickUserFromChat'
 
-export default function ExitDialog({ isOpen, onClose }: IDialogBase) {
-	const { mutateLogout } = useLogout()
-	const handleExitClick = () => {
-		mutateLogout()
+interface IKickUserDialog extends IDialogBase {
+	chatId: string
+	userLogin: string
+}
+
+export default function KickUserDialog({
+	isOpen,
+	onClose,
+	chatId,
+	userLogin
+}: IKickUserDialog) {
+	const { kickUser } = useKickUserFromChat()
+	const handleKickClick = () => {
+		kickUser({ chatId, userLogin })
+		onClose(false)
 	}
 	return (
 		<Transition show={isOpen}>
@@ -32,13 +43,13 @@ export default function ExitDialog({ isOpen, onClose }: IDialogBase) {
 					>
 						<X />
 					</button>
-					<DialogTitle className='text-lg'>Exit</DialogTitle>
+					<DialogTitle className='text-lg'>Kick user</DialogTitle>
 					<Description className='text-sm text-text-secondary mb-2'>
-						Are you sure you want to exit?
+						Are you sure you want to kick this user from chat?
 					</Description>
 					<Button
 						className='text-red-error'
-						onClick={handleExitClick}
+						onClick={handleKickClick}
 					>
 						Yes
 					</Button>

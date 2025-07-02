@@ -1,4 +1,9 @@
-import { IChatMessagesGet, IMessage, IMessageSend } from '@/types/message.types'
+import {
+	IChatMessagesGet,
+	IMessage,
+	IMessageSend,
+	IMessageSendResponse
+} from '@/types/message.types'
 
 import { axiosWithAuth } from '@/api/interceptors'
 
@@ -20,7 +25,7 @@ class MessageService {
 	}
 
 	async sendMessage(data: IMessageSend) {
-		const response = await axiosWithAuth.post<IMessage>(
+		const response = await axiosWithAuth.post<IMessageSendResponse>(
 			`${this.BASE_URL}/`,
 			data
 		)

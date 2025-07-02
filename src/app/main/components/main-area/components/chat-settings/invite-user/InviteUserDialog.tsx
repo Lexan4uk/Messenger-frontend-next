@@ -6,20 +6,19 @@ import {
 } from '@headlessui/react'
 import cn from 'clsx'
 import { X } from 'lucide-react'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { Button } from '@/components/ui/buttons/Button'
 import { TransparentField } from '@/components/ui/fields/TransparentField'
 
+import { IDialogBase } from '@/types/base.types'
 import { IInviteCreate, IInviteForm } from '@/types/invite.types'
 
-import { useNewInvite } from '../../hooks/useNewInvite'
+import { useNewInvite } from '../../../hooks/useNewInvite'
 
-interface IInviteUserDialog {
+interface IInviteUserDialog extends IDialogBase {
 	chatId: string
-	isOpen: boolean
-	onClose: Dispatch<SetStateAction<boolean>>
 }
 
 export default function InviteUserDialog({
@@ -27,12 +26,11 @@ export default function InviteUserDialog({
 	isOpen,
 	onClose
 }: IInviteUserDialog) {
-	const { register, handleSubmit, reset } = useForm<IInviteForm>({
+	const { register, handleSubmit, watch } = useForm<IInviteForm>({
 		mode: 'onChange'
 	})
 	const [searchFocus, setSearchFocus] = useState(false)
-	const { newInvite, inviteError, isInviteError, isInviteSuccess } =
-		useNewInvite()
+	const { newInvite, inviteData, inviteError } = useNewInvite()
 
 	const onSubmit: SubmitHandler<IInviteForm> = (data: IInviteForm) => {
 		const queryData: IInviteCreate = {
@@ -80,12 +78,12 @@ export default function InviteUserDialog({
 						/>
 					</div>
 					<Button>Send invite</Button>
-					{isInviteError && inviteError?.response?.data?.message && (
+					{inviteError?.response?.data?.message && (
 						<p className='text-red-error text-sm'>
 							{inviteError.response.data.message}
 						</p>
 					)}
-					{isInviteSuccess && <p className='text-sm'>Invite sent</p>}
+					{inviteData && <p className='text-sm'>{inviteData.message}</p>}
 				</form>
 			</DialogPanel>
 		</Dialog>

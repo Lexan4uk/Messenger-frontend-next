@@ -7,7 +7,7 @@ export interface IAuthForm {
 }
 export interface IUser extends IBase {
 	login: string
-	name?: string
+	name: string
 	imgUrl?: string
 	chats: IProfileChats[]
 }

@@ -11,12 +11,25 @@ import { Button } from '@/components/ui/buttons/Button'
 
 import { IDialogBase } from '@/types/base.types'
 
-import { useLogout } from '@/hooks/useLogout'
+import { useSelectedChat } from '@/hooks/useSelectedChat'
 
-export default function ExitDialog({ isOpen, onClose }: IDialogBase) {
-	const { mutateLogout } = useLogout()
+import { useLeaveChat } from '../../../hooks/useLeaveChat'
+
+interface ILeaveChatDialog extends IDialogBase {
+	chatId: string
+}
+
+export default function LeaveChatDialog({
+	isOpen,
+	onClose,
+	chatId
+}: ILeaveChatDialog) {
+	const { leaveChat } = useLeaveChat()
+	const { setSelectedChat } = useSelectedChat()
 	const handleExitClick = () => {
-		mutateLogout()
+		leaveChat({ chatId })
+		setSelectedChat(null)
+		onClose(false)
 	}
 	return (
 		<Transition show={isOpen}>
@@ -32,9 +45,9 @@ export default function ExitDialog({ isOpen, onClose }: IDialogBase) {
 					>
 						<X />
 					</button>
-					<DialogTitle className='text-lg'>Exit</DialogTitle>
+					<DialogTitle className='text-lg'>Leave chat</DialogTitle>
 					<Description className='text-sm text-text-secondary mb-2'>
-						Are you sure you want to exit?
+						Are you sure you want to leave?
 					</Description>
 					<Button
 						className='text-red-error'
